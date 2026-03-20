@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE = "http://localhost:8080/api/articles";
+const API_BASE = "https://beyondchatsassignment.onrender.com/api/articles";
 
 export const getArticles = () =>
   axios.get(API_BASE);
