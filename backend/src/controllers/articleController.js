@@ -102,7 +102,9 @@ export async function rewriteArticleController(req, res) {
     for (const link of competitorLinks) {
       try {
         const content = await scrapeArticleContent(link);
-        competitorContents.push({ url: link, content });
+        ${competitorContents
+        .map(c => `URL: ${c.url}\n${c.content}`)
+        .join("\n\n---\n\n")};
       } catch {
         console.warn("Skipping competitor:", link);
       }
