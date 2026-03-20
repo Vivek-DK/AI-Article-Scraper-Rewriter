@@ -133,10 +133,12 @@ export async function rewriteArticleController(req, res) {
 
     console.log("Competitor contents count:", competitorContents.length);
 
-    if (competitorContents.length === 0) {
-      console.log("No valid competitor content");
-      return res.status(400).json({
-        message: "Failed to scrape competitor articles"
+     if (competitorContents.length === 0) {
+      console.warn("No competitors, using original article");
+
+      competitorContents.push({
+        url: "fallback",
+        content: article.content.slice(0, 1500)
       });
     }
 
