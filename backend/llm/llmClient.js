@@ -23,6 +23,7 @@ export async function rewriteWithLLM(prompt) {
   !response.data.choices[0]
 ) {
   throw new Error("Invalid LLM response");
+  console.log("LLM RAW RESPONSE:", JSON.stringify(response.data, null, 2));
 }
   return response.data.choices[0].message.content;
 }
