@@ -45,37 +45,22 @@ export function extractTopArticles(results) {
     const url = item.link;
     if (!url) continue;
 
-    // Domain blacklist
     if (blockedDomains.some(d => url.includes(d))) continue;
 
-    // Reject files & feeds
     if (
       url.endsWith(".pdf") ||
       url.includes("/feed") ||
       url.includes("/tag/") ||
       url.includes("/category/")
-    ) {
-      continue;
-    }
-
-    // Must look like an article URL
-    if (
-      !url.includes("/blog") &&
-      !url.includes("/article") &&
-      !url.includes("/guide") &&
-      !url.includes("/learn") &&
-      !url.includes("medium.com")
-    ) {
-      continue;
-    }
+    ) continue;
 
     valid.push(url);
 
-    if (valid.length === 2) break;
+    if (valid.length === 3) break; // take more, safer
   }
 
-  if (valid.length < 2) {
-    throw new Error("Not enough valid competitor articles found from Google");
+  if (valid.length === 0) {
+    throw new Error("No valid competitor articles found");
   }
 
   return valid;
