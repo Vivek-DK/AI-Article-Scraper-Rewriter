@@ -2,54 +2,38 @@ import axios from "axios";
 import { load } from "cheerio";
 
 function normalizeUrl(url) {
-  const mirrorDomains = [
-    "medium.com",
-    "chatbotsmagazine.com",
-  ];
-
-  if (mirrorDomains.some(d => url.includes(d))) {
-    return `https://r.jina.ai/${url}`;
-  }
-
-  return url;
+  // Force ALL through Jina (production safe)
+  return `https://r.jina.ai/${url}`;
 }
 
 export async function scrapeArticleContent(url) {
   const finalUrl = normalizeUrl(url);
 
-  console.log("Fetching:", finalUrl); // DEBUG — do NOT remove yet
+  console.log("Fetching:", finalUrl);
 
-  const { data } = await axios.get(finalUrl, {
-    timeout: 15000,
-    headers: {
-      "User-Agent": "Mozilla/5.0",
-    },
-  });
+  try {
+    const { data } = await axios.get(finalUrl, {
+      timeout: 20000,
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9",
+      },
+    });
 
-  // If using readable mirror, return directly
-  if (finalUrl.startsWith("https://r.jina.ai/")) {
-    if (typeof data !== "string" || data.trim().length === 0) {
-      throw new Error("Readable mirror returned empty content");
+    if (!data || typeof data !== "string") {
+      throw new Error("Empty response");
     }
 
-    return data.trim();
-  }
-
-  // Fallback HTML parsing (won’t run for these domains)
-  const $ = load(data);
-  $("script, style, nav, footer, header, aside, noscript").remove();
-
-  let content = "";
-  $("article p").each((_, el) => {
-    const text = $(el).text().trim();
-    if (text.length > 60) {
-      content += text + "\n\n";
+    // Jina already gives clean text
+    if (data.length < 300) {
+      throw new Error("Content too short");
     }
-  });
 
-  if (content.length < 500) {
-    throw new Error("Failed to extract content");
+    return data.slice(0, 3000); // limit size (IMPORTANT)
+
+  } catch (err) {
+    console.error("Scrape failed:", err.message);
+    throw err;
   }
-
-  return content.trim();
 }
