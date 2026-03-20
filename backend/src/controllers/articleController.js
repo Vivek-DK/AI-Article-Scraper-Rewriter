@@ -70,20 +70,31 @@ export const deleteArticle = async (req, res) => {
 };
 
 export async function rewriteArticleController(req, res) {
+  console.log("Rewrite request received:", req.params.id);
+
   try {
     const article = await Article.findById(req.params.id);
+
     if (!article) {
+      console.log("Article not found");
       return res.status(404).json({ message: "Article not found" });
     }
 
+    console.log("Article found:", article.title);
+
     if (!article.content || article.content.length < 300) {
+      console.log("Content too short:", article.content?.length);
       return res.status(400).json({
         message: "Article content too short to rewrite"
       });
     }
 
+    console.log("Searching Google...");
     const searchResults = await searchGoogle(article.title);
+    console.log("Search results count:", searchResults.length);
+
     if (!searchResults.length) {
+      console.log("No Google results");
       return res.status(400).json({
         message: "No Google results found"
       });
@@ -92,31 +103,61 @@ export async function rewriteArticleController(req, res) {
     let competitorLinks;
     try {
       competitorLinks = extractTopArticles(searchResults);
+      console.log("Competitor links:", competitorLinks);
     } catch (err) {
+      console.error("Extract competitors failed:", err.message);
       return res.status(400).json({
         message: "Not enough valid competitor articles found"
       });
     }
 
     const competitorContents = [];
+
     for (const link of competitorLinks) {
+      console.log("Scraping:", link);
+
       try {
         const content = await scrapeArticleContent(link);
-        ${competitorContents
-        .map(c => `URL: ${c.url}\n${c.content}`)
-        .join("\n\n---\n\n")};
-      } catch {
+        console.log("Scraped length:", content.length);
+
+        competitorContents.push({
+          url: link,
+          content: content.slice(0, 1500) // prevent huge prompts
+        });
+
+      } catch (err) {
         console.warn("Skipping competitor:", link);
+        console.warn("Reason:", err.message);
       }
     }
 
+    console.log("Competitor contents count:", competitorContents.length);
+
     if (competitorContents.length === 0) {
+      console.log("No valid competitor content");
       return res.status(400).json({
         message: "Failed to scrape competitor articles"
       });
     }
 
-    const rewritten = await rewriteArticle(article, competitorContents);
+    console.log("Sending to LLM...");
+    let rewritten;
+
+    try {
+      rewritten = await rewriteArticle(article, competitorContents);
+      console.log("LLM response received");
+    } catch (err) {
+      console.error("LLM FAILED:");
+      console.error(err.response?.data || err.message);
+      throw err;
+    }
+
+    if (!rewritten?.rewrittenContent) {
+      console.log("Empty rewritten content");
+      throw new Error("LLM returned empty content");
+    }
+
+    console.log("Rewritten content length:", rewritten.rewrittenContent.length);
 
     article.rewrittenContent = `
 ${rewritten.rewrittenContent}
@@ -130,6 +171,7 @@ ${competitorLinks.map((u, i) => `${i + 1}. ${u}`).join("\n")}
     article.competitorLinks = competitorLinks;
 
     await article.save();
+    console.log("Article saved successfully");
 
     res.json({
       message: "Article rewritten successfully",
@@ -137,7 +179,9 @@ ${competitorLinks.map((u, i) => `${i + 1}. ${u}`).join("\n")}
     });
 
   } catch (err) {
-    console.error("Rewrite error:", err);
+    console.error("FINAL ERROR:");
+    console.error(err.stack || err.message);
+
     res.status(500).json({
       message: "Rewrite failed",
       error: err.message
