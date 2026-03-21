@@ -137,25 +137,25 @@ npm run dev
 
 ## 📈 Improvements (Next Steps)
 
-# - Add Redis caching for repeated requests
-# - Implement job queue (BullMQ / RabbitMQ)
-# - Improve prompt engineering for consistency
-# - Add content quality scoring system
-# - Handle scraping failures with retry logic
+- Add Redis caching for repeated requests
+- Implement job queue (BullMQ / RabbitMQ)
+- Improve prompt engineering for consistency
+- Add content quality scoring system
+- Handle scraping failures with retry logic
 
 ---
 
 ## ⚠️ Known Limitations
 
-# - Some websites block scraping (bot protection)
-# - LLM output depends on API/model reliability
-# - No background job queue (currently synchronous)
+- Some websites block scraping (bot protection)
+- LLM output depends on API/model reliability
+- No background job queue (currently synchronous)
 
 ---
 
 ## 🔗 Live Demo
 
-# (Add Live Link Here)
+https://ai-article-scraper-rewriter.vercel.app/
 
 ---
 
