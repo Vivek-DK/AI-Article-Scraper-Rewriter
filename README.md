@@ -102,10 +102,10 @@ A production-style full-stack application that:
 Create `.env` inside backend:
 
 ```env
-MONGO_URL=
-SERPER_API_KEY=
-OPENROUTER_API_KEY=
-
+MONGO_URL=your_mongodb_connection_string
+SERPER_API_KEY=your_serper_api_key
+OPENROUTER_API_KEY=your_llm_api_key
+```
 ---
 
 ## 🚀 Getting Started
