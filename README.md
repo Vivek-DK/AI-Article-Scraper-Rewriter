@@ -1,47 +1,169 @@
-# AI Article Scraper & Rewriter
+# 🚀 AI Article Scraper & Rewriter
 
-## Overview
-
-This project is a full-stack implementation for the BeyondChats assignment.  
-It scrapes blog articles, stores them in a database, analyzes competitor articles ranking on Google, rewrites the original content using an LLM, and publishes the updated article with proper references.
-
-The project is divided into **three phases**:
-
-- **Phase 1:** Scraping BeyondChats blogs, storing data, and CRUD APIs  
-- **Phase 2:** Google search, competitor scraping, AI-based rewriting  
-- **Phase 3:** React frontend for managing and viewing articles  
+> Full-stack system that scrapes, analyzes, and rewrites articles using LLMs
 
 ---
 
-## Tech Stack
+## 📌 Overview
+
+A production-style full-stack application that:
+
+- Scrapes blog articles from the web  
+- Analyzes competitor content using search APIs  
+- Rewrites content using LLMs for improved clarity  
+- Stores and manages structured data  
+- Provides a React dashboard for full control  
+
+---
+
+## ⚡ Key Features
+
+- 🔍 Automated Web Scraping (Cheerio)
+- 🧠 AI-Based Content Rewriting (LLMs)
+- 📊 Competitor Analysis via Search API
+- 🗂 Structured Data Storage (MongoDB)
+- 🔐 Clean REST API Architecture
+- 💻 Interactive React Dashboard
+
+---
+
+## 🧱 Tech Stack
 
 ### Backend
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- Axios
-- Cheerio
-- Serper.dev (Google Search API)
-- OpenRouter / LLM (Gemma compatible)
+- Node.js  
+- Express.js  
+- MongoDB (Mongoose)  
+- Axios  
+- Cheerio  
+- Serper.dev API  
+- OpenRouter (LLM API)  
 
 ### Frontend
-- React (Vite)
-- Axios
-- React Router DOM
+- React (Vite)  
+- Axios  
+- React Router DOM  
 
 ---
 
-## Complete Project Structure
+## 📁 Project Structure
 
+```
+
+.
+├── backend
+│   ├── llm
+│   ├── node_modules
+│   ├── scraper
+│   ├── scripts
+│   ├── src
+│   ├── package.json
+│   └── package-lock.json
+│
+├── frontend
+│   ├── src
+│   │   ├── api
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── index.html
+│   ├── vite.config.js
+│   ├── package.json
+│   └── package-lock.json
+│
+└── README.md
+
+```
+
+## 🔄 System Workflow
+
+1. Scrape article content  
+2. Store structured data in database  
+3. Fetch competitor articles via search API  
+4. Process & clean content  
+5. Send to LLM for rewriting  
+6. Store rewritten version with references  
+7. Display via frontend dashboard  
 
 ---
 
-## Environment Variables
+## 🧠 Key Engineering Decisions
 
-Create a `.env` file inside the **backend** directory:
+- Used **MongoDB** for flexible schema and incremental data enrichment  
+- Avoided direct Google scraping → used **Serper API** for reliability  
+- Implemented **content cleaning pipeline** before LLM processing  
+- Designed **modular backend structure** for scalability  
+
+---
+
+## ⚙️ Environment Setup
+
+Create `.env` inside backend:
 
 ```env
-MONGO_URL=your_mongodb_connection_string
-SERPER_API_KEY=your_serper_api_key
-OPENROUTER_API_KEY=your_llm_api_key
+MONGO_URL=
+SERPER_API_KEY=
+OPENROUTER_API_KEY=
+
+---
+
+## 🚀 Getting Started
+
+### Backend
+```
+cd backend
+npm install
+npm run dev
+```
+
+### Frontend
+```
+cd frontend
+npm install
+npm run dev
+```
+---
+
+## 📸 Screenshots
+--- 
+## Home Page
+![image alt](https://github.com/Vivek-DK/AI-Article-Scraper-Rewriter/blob/29e22774bec05444f2c5c2e4d8b2e1c2cd29bffe/frontend/images/home_page.png)
+
+---
+## Individual Article 
+![image alt](https://github.com/Vivek-DK/AI-Article-Scraper-Rewriter/blob/29e22774bec05444f2c5c2e4d8b2e1c2cd29bffe/frontend/images/article_page.png)
+---
+
+## 📈 Improvements (Next Steps)
+
+# - Add Redis caching for repeated requests
+# - Implement job queue (BullMQ / RabbitMQ)
+# - Improve prompt engineering for consistency
+# - Add content quality scoring system
+# - Handle scraping failures with retry logic
+
+---
+
+## ⚠️ Known Limitations
+
+# - Some websites block scraping (bot protection)
+# - LLM output depends on API/model reliability
+# - No background job queue (currently synchronous)
+
+---
+
+## 🔗 Live Demo
+
+# (Add Live Link Here)
+
+---
+
+## 👨‍💻 Author
+* **Vivek DK** 
+Full Stack Developer
+React • Node.js • MongoDB
+
+⭐ If you found this project useful, consider giving it a star.
+
+---
