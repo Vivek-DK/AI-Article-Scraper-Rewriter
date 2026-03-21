@@ -1,4 +1,4 @@
-# BeyondChats Assignment – AI Article Scraper & Rewriter
+# AI Article Scraper & Rewriter
 
 ## Overview
 
