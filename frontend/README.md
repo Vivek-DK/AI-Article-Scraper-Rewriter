@@ -45,6 +45,9 @@ A production-style full-stack application that:
 
 ---
 
+## 📁 Project Structure
+
+```
 
 .
 ├── backend
@@ -70,6 +73,8 @@ A production-style full-stack application that:
 │   └── package-lock.json
 │
 └── README.md
+
+```
 ---
 
 ## 🔄 System Workflow
@@ -142,7 +147,9 @@ npm run dev
 
 ## ⚠️ Known Limitations
 -Some websites block scraping (bot protection)
+
 -LLM output depends on API/model reliability
+
 -No background job queue (currently synchronous)
 
 ---
@@ -153,8 +160,10 @@ https://ai-article-scraper-rewriter.vercel.app/
 ---
 
 ## 👨‍💻 Author
-* **Vivek DK** 
+* **Vivek DK**
+  
 Full Stack Developer
+
 React • Node.js • MongoDB
 
 ⭐ If you found this project useful, consider giving it a star.
